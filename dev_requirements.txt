@@ -1,0 +1,7 @@
+-i https://pypi.python.org/simple
+pydantic
+flake8
+pytest
+richbench
+sqlalchemy
+coverage
