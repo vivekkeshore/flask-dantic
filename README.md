@@ -14,7 +14,8 @@ A single serialize call will take care of validating the returned response as we
 ![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/vivekkeshore/flask-dantic)
 [![GitHub license](https://img.shields.io/github/license/vivekkeshore/flask-dantic)](https://github.com/vivekkeshore/flask-dantic)
 ![PyPI - Python Version](https://img.shields.io/pypi/pyversions/flask-dantic)
-
+![Snyk Vulnerabilities for GitHub Repo](https://img.shields.io/snyk/vulnerabilities/github/vivekkeshore/flask-dantic)
+![GitHub repo size](https://img.shields.io/github/repo-size/vivekkeshore/flask-dantic)
 
 ----
 
@@ -130,7 +131,7 @@ UUID_REGEX = "[0-9a-f]{8}(?:-[0-9a-f]{4}){3}-[0-9a-f]{12}"
 
 
 class UserPathParamModel(BaseModel):
-    id: str = Field(..., regex=UUID_REGEX, description="ID of the user")
+    user_id: str = Field(..., regex=UUID_REGEX, description="ID of the user")
 
 
 @flask_app.route("/user/get/<string:user_id>", methods=["GET"])
