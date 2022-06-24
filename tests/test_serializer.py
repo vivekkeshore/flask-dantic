@@ -6,6 +6,7 @@ import pytest
 from pydantic import BaseModel
 from pydantic.fields import ModelField
 from sqlalchemy.orm import Session
+import json
 
 from flask_dantic.pydantic_serializer import get_response_field, serialize
 from tests.create_test_db import get_db_engine, User
@@ -71,19 +72,19 @@ def test_serialize(db):
     single_user = users[0]
 
     res = serialize(single_user, UserModel)
-    assert res == {"username": USERNAMES[0], "age": AGE, "phone": None}
+    assert res == json.dumps({"username": USERNAMES[0], "age": AGE, "phone": None})
 
     res = serialize(users, UserModel, many=True)
-    assert res == [{"username": username, "age": AGE, "phone": None} for username in USERNAMES]
+    assert res == json.dumps([{"username": username, "age": AGE, "phone": None} for username in USERNAMES])
 
     res = serialize(users, UserModel, many=True, include=["username"])
-    assert res == [{"username": username} for username in USERNAMES]
+    assert res == json.dumps([{"username": username} for username in USERNAMES])
 
     res = serialize(users, UserModel, many=True, exclude=["age"])
-    assert res == [{"username": username, "phone": None} for username in USERNAMES]
+    assert res == json.dumps([{"username": username, "phone": None} for username in USERNAMES])
 
     res = serialize(users, UserModel, many=True, exclude_none=True)
-    assert res == [{"username": username, "age": AGE} for username in USERNAMES]
+    assert res == json.dumps([{"username": username, "age": AGE} for username in USERNAMES])
 
 
 def test_serialize_negative(db):

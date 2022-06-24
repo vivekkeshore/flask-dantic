@@ -3,6 +3,7 @@ from typing import Any, Dict, Optional, Type, Union, List
 from pydantic import BaseConfig
 from pydantic.class_validators import Validator
 from pydantic.fields import FieldInfo, ModelField, UndefinedType
+import json
 
 from flask_dantic.pydantic_serializer.encoders import jsonable_encoder
 
@@ -59,7 +60,7 @@ def serialize(
     response_dict, errors = response_field.validate(data, {}, loc=("response",))
 
     if not errors:
-        return jsonable_encoder(response_dict, include=include, exclude=exclude, exclude_none=exclude_none)
+        return json.dumps(jsonable_encoder(response_dict, include=include, exclude=exclude, exclude_none=exclude_none))
     else:
         for error in errors:
             raise error

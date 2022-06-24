@@ -4,48 +4,56 @@ from typing import Callable, Optional, Type
 
 from flask import jsonify, make_response, request
 from pydantic import BaseModel, ValidationError
+
 from .exceptions import RequestValidationError
 
 MEDIA_TYPE_JSON = "application/json"
 
 
-def validate_params(model: Type[BaseModel], model_args: dict, errors: dict, error_key: str) -> BaseModel:
+def validate_params(model: Type[BaseModel], model_args: dict) -> BaseModel:
     validated_model = model(**model_args)
     return validated_model
 
 
 def get_error_key(type_: str):
-    return (("body_params", "path_params")[
-        type_ == "path"], "query_params")[type_ == "args"]
+    """
+    Args:
+         type_ (str): type_ would be either args, path or json
+    """
+    return (("body_params", "path_params")[type_ == "path"], "query_params")[type_ == "args"]
 
 
 def validate_(model, type_: str, errors):
     error_key = get_error_key(type_)
     err_ = ""
     error_message = None
-    content_type = request.headers.get(
-        "Content-Type", "").lower()
+    content_type = request.headers.get("Content-Type", "").lower()
     media_type = content_type.split(";")[0]
     payload = getattr(request, type_ if type_ != "path" else "view_args")
     query_model = None
+
     try:
         query_model = validate_params(
-            model, payload, errors, error_key)
+            model, payload
+        )
     except ValidationError as ex:
         if error_key == "query_params":
             err_ = "the query params"
         elif error_key == "path_params":
-            err_ == "the path params"
+            err_ = "the path params"
         elif error_key == "body_params":
             err_ = "the request json body"
         error_message = f"Exception occurred while parsing {err_}. Error {ex}"
         errors[error_key] = ex.errors()
+
     except TypeError as ex:
+        error_message = str(ex)
         if error_key == "body_params" and media_type != MEDIA_TYPE_JSON:
             error_message = f"Unsupported media type '{content_type}' in request. {MEDIA_TYPE_JSON}' is required."
-        raise RequestValidationError(error_message=str(ex))
+
     if error_message:
         raise RequestValidationError(error_message=error_message)
+
     return query_model
 
 
@@ -70,8 +78,11 @@ def pydantic_validator(
 
                 if body:
                     body_model = validate_(body, "json", errors)
+
             except RequestValidationError as e:
-                return make_response(jsonify({"validation_error": e.error_message, "errors": errors}), validation_error_status_code)
+                return make_response(
+                    jsonify({"validation_error": e.error_message, "errors": errors}), validation_error_status_code
+                )
 
             request.query_model = query_model
             request.body_model = body_model
