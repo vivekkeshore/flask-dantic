@@ -8,6 +8,13 @@ This comes handy if you are using pydantic models for request and response in Fl
 
 A single serialize call will take care of validating the returned response as well as serializing it. There are options to include or exclude certain fields or exclude/include fields with null values.
 
+[![PyPI](https://img.shields.io/pypi/v/flask-dantic?color=g)](https://pypi.org/project/flask-pydantic/)
+![Codecov](https://img.shields.io/codecov/c/github/vivekkeshore/flask-dantic)
+[![Python package](https://github.com/vivekkeshore/flask-dantic/actions/workflows/python-package.yml/badge.svg)](https://github.com/vivekkeshore/flask-dantic/actions/workflows/python-package.yml)
+![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/vivekkeshore/flask-dantic)
+[![GitHub license](https://img.shields.io/github/license/vivekkeshore/flask-dantic)](https://github.com/vivekkeshore/flask-dantic)
+![PyPI - Python Version](https://img.shields.io/pypi/pyversions/flask-dantic)
+
 
 ----
 
