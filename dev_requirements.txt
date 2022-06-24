@@ -1,5 +1,6 @@
 -i https://pypi.python.org/simple
 pydantic
+flask
 flake8
 pytest
 richbench
