@@ -5,6 +5,7 @@ name = "pypi"
 
 [packages]
 pydantic = "*"
+flask = "*"
 
 [dev-packages]
 sqlalchemy = "*"

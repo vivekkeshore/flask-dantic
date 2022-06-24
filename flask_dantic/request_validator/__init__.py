@@ -1,0 +1,1 @@
+from flask_dantic.request_validator.validator import pydantic_validator

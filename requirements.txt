@@ -1,2 +1,8 @@
 -i https://pypi.python.org/simple
 pydantic
+
+pytest~=6.2.3
+sqlalchemy~=1.4.15
+setuptools~=52.0.0
+flask~=1.1.2
+werkzeug~=1.0.1
