@@ -1,6 +1,6 @@
 # 🅕🅛🅐🅢🅚-🅓🅐🅝🅣🅘🅒
 
-*Flask-Pydantic* is a Python package that would enable users to use Pydantic models for validations and serialization, thus making it easy to link Flask with Pydantic.
+*Flask-Dantic* is a Python package that would enable users to use Pydantic models for validations and serialization, thus making it easy to link Flask with Pydantic.
 It can validate the request params, query args and path args.
 
 Also, the package provides a serializer that serializes the database objects using the pydantic models. 
@@ -8,7 +8,7 @@ This comes handy if you are using pydantic models for request and response in Fl
 
 A single serialize call will take care of validating the returned response as well as serializing it. There are options to include or exclude certain fields or exclude/include fields with null values.
 
-[![PyPI](https://img.shields.io/pypi/v/flask-dantic?color=g)](https://pypi.org/project/flask-pydantic/)
+[![PyPI](https://img.shields.io/pypi/v/flask-dantic?color=g)](https://pypi.org/project/flask-dantic/)
 ![Codecov](https://img.shields.io/codecov/c/github/vivekkeshore/flask-dantic)
 [![Python package](https://github.com/vivekkeshore/flask-dantic/actions/workflows/python-package.yml/badge.svg)](https://github.com/vivekkeshore/flask-dantic/actions/workflows/python-package.yml)
 ![LGTM Grade](https://img.shields.io/lgtm/grade/python/github/vivekkeshore/flask-dantic)
@@ -201,5 +201,5 @@ Run tests:
 License
 -------
 
-Flask-Pydantic-Serializer is released under the MIT License. See the bundled [`LICENSE`](https://github.com/vivekkeshore/flask-pydantic-serializer/blob/main/LICENSE) file
+Flask-Dantic is released under the MIT License. See the bundled [`LICENSE`](https://github.com/vivekkeshore/flask-dantic/blob/main/LICENSE) file
 for details.
