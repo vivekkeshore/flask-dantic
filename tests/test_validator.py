@@ -91,12 +91,8 @@ def test_validate_query_params_invalid_model(app):
         res = pydantic_validator(query=UserModel)(
             application_api)(test_request_ctx.request)
 
-        # Expected validation error.
-        expected = [{'loc': ['username'], 'msg': 'field required',
-                     'type': 'value_error.missing'}]
-
         assert res.json.get("validation_error")
-        assert res.json.get("validation_error").get("query_params") == expected
+        assert "query" in res.json.get("validation_error")
         assert res.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
 
 
@@ -107,7 +103,9 @@ def test_validate_query_params_invalid_params(app):
 
         res = pydantic_validator(query=FooModel)(
             application_api)(test_request_ctx.request)
-        assert res.json.get("validation_error")
+        response_data = res.json
+        assert response_data.get("validation_error")
+        assert "list" in response_data.get("validation_error")
         assert res.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
 
 
@@ -192,18 +190,18 @@ def test_validate_path_params(app):
 
 def test_validate_path_params_invalid_model(app):
     with app.test_request_context() as test_request_ctx:
-        kwargs = {"foo": "bar", "bar": "foo"}
-        test_request_ctx.request = MockRequest()
+        test_request_ctx.request = make_path_request_context(
+            {"foo": "bar", "bar": "foo"})
 
         res = pydantic_validator(path_params=UserModel)(
-            application_api)(test_request_ctx.request, **kwargs)
+            application_api)(test_request_ctx.request)
 
         # Expected validation error.
         expected = [{'loc': ['username'], 'msg': 'field required',
                      'type': 'value_error.missing'}]
 
         assert res.json.get("validation_error")
-        assert res.json.get("validation_error").get("path_params") == expected
+        assert res.json.get("errors").get("path_params") == expected
         assert res.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
 
 
@@ -313,7 +311,7 @@ def test_validate_json_body_invalid_model(app):
                      'type': 'value_error.missing'}]
 
         assert res.json.get("validation_error")
-        assert res.json.get("validation_error").get("body_params") == expected
+        assert res.json.get("errors").get("body_params") == expected
         assert res.status_code == HTTPStatus.UNPROCESSABLE_ENTITY
 
 
