@@ -9,6 +9,12 @@ from .exceptions import RequestValidationError
 
 MEDIA_TYPE_JSON = "application/json"
 
+error_key_map = {
+    "query_params": "the query params",
+    "path_params": "the path params",
+    "body_params": "the request json body",
+}
+
 
 def validate_params(model: Type[BaseModel], model_args: dict) -> BaseModel:
     validated_model = model(**model_args)
@@ -25,7 +31,6 @@ def get_error_key(type_: str):
 
 def validate_(model, type_: str, errors):
     error_key = get_error_key(type_)
-    err_ = ""
     error_message = None
     content_type = request.headers.get("Content-Type", "").lower()
     media_type = content_type.split(";")[0]
@@ -37,13 +42,7 @@ def validate_(model, type_: str, errors):
             model, payload
         )
     except ValidationError as ex:
-        if error_key == "query_params":
-            err_ = "the query params"
-        elif error_key == "path_params":
-            err_ = "the path params"
-        elif error_key == "body_params":
-            err_ = "the request json body"
-        error_message = f"Exception occurred while parsing {err_}. Error {ex}"
+        error_message = f"Exception occurred while parsing {error_key_map[error_key]}. Error {ex}"
         errors[error_key] = ex.errors()
 
     except TypeError as ex:
