@@ -1,4 +1,3 @@
-from distutils.log import error
 from functools import wraps
 from http import HTTPStatus
 from typing import Callable, Optional, Type
