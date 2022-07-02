@@ -50,7 +50,8 @@ def serialize(
         exclude: Optional[List[str]] = None,
         model_name: str = "ResponseModel",
         exclude_none: bool = False,
-        many=False
+        many = False,
+        json_dump: bool = False,
 ):
     """Create python dict from an object using a Pydantic Type"""
     if many:
@@ -60,7 +61,11 @@ def serialize(
     response_dict, errors = response_field.validate(data, {}, loc=("response",))
 
     if not errors:
-        return json.dumps(jsonable_encoder(response_dict, include=include, exclude=exclude, exclude_none=exclude_none))
+        encoded_obj = jsonable_encoder(response_dict, include=include, exclude=exclude, exclude_none=exclude_none)
+        if json_dump:
+            return json.dumps(encoded_obj)
+        return encoded_obj
+
     else:
         for error in errors:
             raise error

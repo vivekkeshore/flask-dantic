@@ -67,23 +67,45 @@ def db():
     os.unlink("test.db")
 
 
-def test_serialize(db):
+def test_serialize_encoded_objects(db):
     users = db.query(User).all()
     single_user = users[0]
 
+    # Returns encoded serializable object.
     res = serialize(single_user, UserModel)
-    assert res == json.dumps({"username": USERNAMES[0], "age": AGE, "phone": None})
+    assert res == {"username": USERNAMES[0], "age": AGE, "phone": None}
 
     res = serialize(users, UserModel, many=True)
-    assert res == json.dumps([{"username": username, "age": AGE, "phone": None} for username in USERNAMES])
+    assert res == [{"username": username, "age": AGE, "phone": None} for username in USERNAMES]
 
     res = serialize(users, UserModel, many=True, include=["username"])
-    assert res == json.dumps([{"username": username} for username in USERNAMES])
+    assert res == [{"username": username} for username in USERNAMES]
 
     res = serialize(users, UserModel, many=True, exclude=["age"])
-    assert res == json.dumps([{"username": username, "phone": None} for username in USERNAMES])
+    assert res == [{"username": username, "phone": None} for username in USERNAMES]
 
     res = serialize(users, UserModel, many=True, exclude_none=True)
+    assert res == [{"username": username, "age": AGE} for username in USERNAMES]
+
+
+def test_serialize_json_dumped_objects(db):
+    users = db.query(User).all()
+    single_user = users[0]
+
+    # Returns dumped object.
+    res = serialize(single_user, UserModel, json_dump=True)
+    assert res == json.dumps({"username": USERNAMES[0], "age": AGE, "phone": None})
+
+    res = serialize(users, UserModel, many=True, json_dump=True)
+    assert res == json.dumps([{"username": username, "age": AGE, "phone": None} for username in USERNAMES])
+
+    res = serialize(users, UserModel, many=True, include=["username"], json_dump=True)
+    assert res == json.dumps([{"username": username} for username in USERNAMES])
+
+    res = serialize(users, UserModel, many=True, exclude=["age"], json_dump=True)
+    assert res == json.dumps([{"username": username, "phone": None} for username in USERNAMES])
+
+    res = serialize(users, UserModel, many=True, exclude_none=True, json_dump=True)
     assert res == json.dumps([{"username": username, "age": AGE} for username in USERNAMES])
 
 

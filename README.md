@@ -159,7 +159,7 @@ from http import HTTPStatus
 from typing import Optional
 
 from flask import current_app as flask_app, jsonify
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 
 from flask_dantic import serialize, pydantic_validator
 
@@ -187,6 +187,22 @@ def get_user(user_id):
     # Pass the db record and pydantic model to serialize method. Many is set to False by default.
     user = serialize(user, UserResponseModel)  # Serialize call
     return jsonify(user), HTTPStatus.OK
+```
+
+### Serialization - Dump directly to json. This is useful when you want to return the response as json without flask jsonify.
+
+```python
+from flask_dantic import serialize
+
+# Taking the same example from above. Modifying the serialize call.
+@flask_app.route("/user/get/<string:user_id>", methods=["GET"])
+@pydantic_validator(path_params=UserPathParamModel)  # Pass the model against path_params
+def get_user(user_id):
+    user = get_single_user_by_id(user_id)
+    
+    # Pass the db record and pydantic model to serialize method. Many is set to False by default.
+      # Serialize call
+    return serialize(user, UserResponseModel, json_dump=True), HTTPStatus.OK
 ```
 
 Tests
