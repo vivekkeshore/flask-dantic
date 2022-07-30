@@ -1,9 +1,9 @@
+import json
 from typing import Any, Dict, Optional, Type, Union, List
 
 from pydantic import BaseConfig
 from pydantic.class_validators import Validator
 from pydantic.fields import FieldInfo, ModelField, UndefinedType
-import json
 
 from flask_dantic.pydantic_serializer.encoders import jsonable_encoder
 
@@ -50,8 +50,8 @@ def serialize(
         exclude: Optional[List[str]] = None,
         model_name: str = "ResponseModel",
         exclude_none: bool = False,
-        many = False,
-        json_dump: bool = False,
+        many=False,
+        json_dump: bool = True,
 ):
     """Create python dict from an object using a Pydantic Type"""
     if many:

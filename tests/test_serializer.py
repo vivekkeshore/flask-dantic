@@ -72,19 +72,19 @@ def test_serialize_encoded_objects(db):
     single_user = users[0]
 
     # Returns encoded serializable object.
-    res = serialize(single_user, UserModel)
+    res = serialize(single_user, UserModel, json_dump=False)
     assert res == {"username": USERNAMES[0], "age": AGE, "phone": None}
 
-    res = serialize(users, UserModel, many=True)
+    res = serialize(users, UserModel, many=True, json_dump=False)
     assert res == [{"username": username, "age": AGE, "phone": None} for username in USERNAMES]
 
-    res = serialize(users, UserModel, many=True, include=["username"])
+    res = serialize(users, UserModel, many=True, include=["username"], json_dump=False)
     assert res == [{"username": username} for username in USERNAMES]
 
-    res = serialize(users, UserModel, many=True, exclude=["age"])
+    res = serialize(users, UserModel, many=True, exclude=["age"], json_dump=False)
     assert res == [{"username": username, "phone": None} for username in USERNAMES]
 
-    res = serialize(users, UserModel, many=True, exclude_none=True)
+    res = serialize(users, UserModel, many=True, exclude_none=True, json_dump=False)
     assert res == [{"username": username, "age": AGE} for username in USERNAMES]
 
 
