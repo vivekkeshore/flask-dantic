@@ -52,6 +52,7 @@ def serialize(
         exclude_none: bool = False,
         many=False,
         json_dump: bool = True,
+        json_indent: int = 2,
 ):
     """Create python dict from an object using a Pydantic Type"""
     if many:
@@ -63,7 +64,7 @@ def serialize(
     if not errors:
         encoded_obj = jsonable_encoder(response_dict, include=include, exclude=exclude, exclude_none=exclude_none)
         if json_dump:
-            return json.dumps(encoded_obj)
+            return json.dumps(encoded_obj, indent=json_indent)
         return encoded_obj
 
     else:

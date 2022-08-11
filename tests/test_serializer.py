@@ -94,19 +94,19 @@ def test_serialize_json_dumped_objects(db):
 
     # Returns dumped object.
     res = serialize(single_user, UserModel, json_dump=True)
-    assert res == json.dumps({"username": USERNAMES[0], "age": AGE, "phone": None})
+    assert res == json.dumps({"username": USERNAMES[0], "age": AGE, "phone": None}, indent=2)
 
     res = serialize(users, UserModel, many=True, json_dump=True)
-    assert res == json.dumps([{"username": username, "age": AGE, "phone": None} for username in USERNAMES])
+    assert res == json.dumps([{"username": username, "age": AGE, "phone": None} for username in USERNAMES], indent=2)
 
     res = serialize(users, UserModel, many=True, include=["username"], json_dump=True)
-    assert res == json.dumps([{"username": username} for username in USERNAMES])
+    assert res == json.dumps([{"username": username} for username in USERNAMES], indent=2)
 
     res = serialize(users, UserModel, many=True, exclude=["age"], json_dump=True)
-    assert res == json.dumps([{"username": username, "phone": None} for username in USERNAMES])
+    assert res == json.dumps([{"username": username, "phone": None} for username in USERNAMES], indent=2)
 
     res = serialize(users, UserModel, many=True, exclude_none=True, json_dump=True)
-    assert res == json.dumps([{"username": username, "age": AGE} for username in USERNAMES])
+    assert res == json.dumps([{"username": username, "age": AGE} for username in USERNAMES], indent=2)
 
 
 def test_serialize_negative(db):
