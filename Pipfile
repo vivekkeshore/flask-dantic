@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-pydantic = "*"
+pydantic = "1.10.9"
 flask = "*"
 
 [dev-packages]
@@ -17,4 +17,4 @@ coverage = "*"
 flake8 = "*"
 
 [requires]
-python_version = "3.8"
+python_version = "3.10"
