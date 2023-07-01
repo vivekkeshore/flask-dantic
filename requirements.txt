@@ -1,5 +1,5 @@
 -i https://pypi.python.org/simple
-pydantic
+pydantic==1.10.9
 
 pytest~=6.2.3
 sqlalchemy~=1.4.15

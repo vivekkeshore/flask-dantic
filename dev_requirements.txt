@@ -1,5 +1,5 @@
 -i https://pypi.python.org/simple
-pydantic
+pydantic==1.10.9
 flask
 flake8
 pytest
